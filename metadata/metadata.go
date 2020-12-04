@@ -97,7 +97,7 @@ func FetchOctpassMetadataWithContext(ctx context.Context, tokenURI string) (*Oct
 		return nil, fmt.Errorf("Status: %d, msg: %s", resp.StatusCode, string(body))
 	}
 
-	return UnmarshalERC721Metadata(body)
+	return UnmarshalOctpassMetadata(body)
 }
 
 // NewOctpassMetadata returns *NewOctpassMetadata
@@ -106,24 +106,35 @@ func NewOctpassMetadata() (*OctpassMetadata, error) {
 }
 
 // UnmarshalOctpassMetadata unmarshals OctpassMetadata
-func UnmarshalERC721Metadata(data []byte) (*OctpassMetadata, error) {
+func UnmarshalOctpassMetadata(data []byte) (*OctpassMetadata, error) {
 	var r = &OctpassMetadata{}
 	err := json.Unmarshal(data, r)
 	return r, err
 }
 
 // Marshal marshals OctpassMetadata
-func (e *OctpassMetadata) Marshal() ([]byte, error) {
-	return json.Marshal(e)
+func (md *OctpassMetadata) Marshal() ([]byte, error) {
+	return json.Marshal(md)
 }
 
 // SetAttributes convert to JSON.RawMessage and set to Attributes
-func (e *OctpassMetadata) SetAttributes(attributes interface{}) error {
+func (md *OctpassMetadata) SetAttributes(attributes interface{}) error {
 	byte, err := json.Marshal(attributes)
 	if err != nil {
 		return err
 	}
 	raw := json.RawMessage(byte)
-	e.Attributes = &raw
+	md.Attributes = &raw
+	return nil
+}
+
+// SetExtras convert to JSON.RawMessage and set to Extras
+func (md *OctpassMetadata) SetExtras(extras interface{}) error {
+	byteData, err := json.Marshal(extras)
+	if err != nil {
+		return err
+	}
+	raw := json.RawMessage(byteData)
+	md.Extras = &raw
 	return nil
 }
