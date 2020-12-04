@@ -1,4 +1,4 @@
-package octpass_metadata_go
+package metadata
 
 import (
 	"context"
