@@ -3,8 +3,6 @@ package octpass_metadata_go
 import (
 	"encoding/json"
 	"testing"
-
-	"github.com/cheekybits/is"
 )
 
 var desiredJSONString = `
@@ -31,11 +29,10 @@ type attributes struct {
 
 func TestERC721Metadata(t *testing.T) {
 
-	is := is.New(t)
-	var err error
-
 	md, err := NewOctpassMetadata()
-	is.NoErr(err)
+	if err != nil {
+		t.Errorf(err.Error())
+	}
 	tmp := *md
 	desired := &tmp
 
@@ -52,15 +49,26 @@ func TestERC721Metadata(t *testing.T) {
 		Stamina:     11.7,
 	}
 	err = md.SetAttributes(a)
-	is.NoErr(err)
+	if err != nil {
+		t.Errorf(err.Error())
+	}
 
 	err = json.Unmarshal(([]byte)(desiredJSONString), desired)
-	is.NoErr(err)
+	if err != nil {
+		t.Errorf(err.Error())
+	}
 
 	dj, err := json.Marshal(desired)
-	is.NoErr(err)
+	if err != nil {
+		t.Errorf(err.Error())
+	}
 
 	mdj, err := json.Marshal(md)
-	is.NoErr(err)
-	is.Equal(string(dj), string(mdj))
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+
+	if string(dj) != string(mdj) {
+		t.Errorf("got: %v\nwant: %v", mdj, dj)
+	}
 }
