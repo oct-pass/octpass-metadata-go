@@ -1,5 +1,5 @@
 <div align="center">
-  <img height="300" src="assets/auth-logo.png">
+  <img height="300" src="assets/oct-pass.png">
 </div>
 
 # Oct-Pass
